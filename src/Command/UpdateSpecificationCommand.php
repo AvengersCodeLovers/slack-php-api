@@ -38,13 +38,15 @@ class UpdateSpecificationCommand extends Command
         $io = new SymfonyStyle($input, $output);
 
         // download official Slack OpenAPI spec and save it (use github version to have response specs with examples)
-        $content = HttpClient::create()->request('GET', 'https://raw.githubusercontent.com/slackapi/slack-api-specs/master/web-api/slack_web_openapi_v2.json', [
+        /*$content = HttpClient::create()->request('GET', 'https://raw.githubusercontent.com/slackapi/slack-api-specs/master/web-api/slack_web_openapi_v2.json', [
             'headers' => [
                 'Accept' => 'application/json',
             ],
         ])->getContent();
         file_put_contents(__DIR__ . '/../../resources/slack-openapi.json', $content);
-        $output->writeln('<info>Downloaded and saved a new specification version</info>');
+        $output->writeln('<info>Downloaded and saved a new specification version</info>');*/
+
+        $content = file_get_contents(__DIR__ . '/../../src/slack-openapi.json');
 
         // sort the spec file
         $sorter = new JsonSorter();

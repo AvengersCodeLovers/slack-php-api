@@ -2479,6 +2479,27 @@ class Client extends Runtime\Client\Client
     }
 
     /**
+     * Finishes an upload started with files.getUploadURLExternal.
+     *
+     * @param array $formParameters {
+     *
+     * @var string $channels Channel ID where the file will be shared. If not specified the file will be private.
+     * @var string $files Array of file ids and their corresponding (optional) titles..
+     * @var string $initial_comment the message text introducing the file in specified `channels`
+     * @var float  $thread_ts Provide another message's `ts` value to upload this file as a reply. Never use a reply's `ts` value; use its parent instead.
+     * @var string $token Authentication token. Requires scope: `files:write` `files:read`
+     *             }
+     *
+     * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
+     *
+     * @return Model\FilesCompleteUploadExternalPostResponse200|Model\FilesCompleteUploadExternalPostResponsedefault|\Psr\Http\Message\ResponseInterface|null
+     */
+    public function filesCompleteUploadExternal(array $formParameters = [], string $fetch = self::FETCH_OBJECT)
+    {
+        return $this->executeEndpoint(new Endpoint\FilesCompleteUploadExternal($formParameters), $fetch);
+    }
+
+    /**
      * Deletes a file.
      *
      * @param array $formParameters {
@@ -2498,6 +2519,27 @@ class Client extends Runtime\Client\Client
     public function filesDelete(array $formParameters = [], array $headerParameters = [], string $fetch = self::FETCH_OBJECT)
     {
         return $this->executeEndpoint(new Endpoint\FilesDelete($formParameters, $headerParameters), $fetch);
+    }
+
+    /**
+     * Gets a URL for an edge external file upload.
+     *
+     * @param array $formParameters {
+     *
+     * @var string $alt_txt description of image for screen-reader
+     * @var string $filename name of the file being uploaded
+     * @var int    $length size in bytes of the file being uploaded
+     * @var string $snippet_type syntax type of the snippet being uploaded
+     * @var string $token Authentication token. Requires scope: `files:write` `files:read`
+     *             }
+     *
+     * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
+     *
+     * @return Model\FilesGetUploadURLExternalPostResponse200|Model\FilesGetUploadURLExternalPostResponsedefault|\Psr\Http\Message\ResponseInterface|null
+     */
+    public function filesGetUploadURLExternal(array $formParameters = [], string $fetch = self::FETCH_OBJECT)
+    {
+        return $this->executeEndpoint(new Endpoint\FilesGetUploadURLExternal($formParameters), $fetch);
     }
 
     /**
@@ -3561,7 +3603,6 @@ class Client extends Runtime\Client\Client
      * @var string $cursor Paginate through collections of data by setting the `cursor` parameter to a `next_cursor` attribute returned by a previous request's `response_metadata`. Default value fetches the first "page" of the collection. See [pagination](/docs/pagination) for more detail.
      * @var bool   $include_locale Set this to `true` to receive the locale for users. Defaults to `false`
      * @var int    $limit The maximum number of items to return. Fewer than the requested number of items may be returned, even if the end of the users list hasn't been reached. Providing no `limit` value will result in Slack attempting to deliver you the entire result set. If the collection is too large you may experience `limit_required` or HTTP 500 errors.
-     * @var string $team_id Encoded team id to list users in, required if org token is used
      * @var string $token Authentication token. Requires scope: `users:read`
      *             }
      *
